@@ -7,7 +7,7 @@ import com.me.injin.testcodewithwitharchitecture.common.domain.exception.Resourc
 import com.me.injin.testcodewithwitharchitecture.post.domain.PostCreate;
 import com.me.injin.testcodewithwitharchitecture.post.domain.PostUpdate;
 import com.me.injin.testcodewithwitharchitecture.post.infrastructure.PostEntity;
-import com.me.injin.testcodewithwitharchitecture.post.infrastructure.PostRepository;
+import com.me.injin.testcodewithwitharchitecture.post.service.port.PostRepository;
 import com.me.injin.testcodewithwitharchitecture.user.infrastructure.UserEntity;
 import com.me.injin.testcodewithwitharchitecture.user.service.UserService;
 import lombok.RequiredArgsConstructor;

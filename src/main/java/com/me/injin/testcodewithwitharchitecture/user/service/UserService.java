@@ -1,21 +1,21 @@
 package com.me.injin.testcodewithwitharchitecture.user.service;
 
 
-import java.time.Clock;
-import java.util.UUID;
-
 import com.me.injin.testcodewithwitharchitecture.common.domain.exception.CertificationCodeNotMatchedException;
 import com.me.injin.testcodewithwitharchitecture.common.domain.exception.ResourceNotFoundException;
-import com.me.injin.testcodewithwitharchitecture.user.domain.UserStatus;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserCreate;
+import com.me.injin.testcodewithwitharchitecture.user.domain.UserStatus;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserUpdate;
 import com.me.injin.testcodewithwitharchitecture.user.infrastructure.UserEntity;
-import com.me.injin.testcodewithwitharchitecture.user.infrastructure.UserRepository;
+import com.me.injin.testcodewithwitharchitecture.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Clock;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +26,12 @@ public class UserService {
 
     public UserEntity getByEmail(String email) {
         return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE)
-            .orElseThrow(() -> new ResourceNotFoundException("Users", email));
+                .orElseThrow(() -> new ResourceNotFoundException("Users", email));
     }
 
     public UserEntity getById(long id) {
         return userRepository.findByIdAndStatus(id, UserStatus.ACTIVE)
-            .orElseThrow(() -> new ResourceNotFoundException("Users", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Users", id));
     }
 
     @Transactional

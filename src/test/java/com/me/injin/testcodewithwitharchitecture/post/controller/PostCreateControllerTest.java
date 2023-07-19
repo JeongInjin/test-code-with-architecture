@@ -1,4 +1,4 @@
-package com.me.injin.testcodewithwitharchitecture.controller;
+package com.me.injin.testcodewithwitharchitecture.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.me.injin.testcodewithwitharchitecture.post.domain.PostCreate;

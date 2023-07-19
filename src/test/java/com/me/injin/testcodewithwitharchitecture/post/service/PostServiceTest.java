@@ -1,4 +1,4 @@
-package com.me.injin.testcodewithwitharchitecture.service;
+package com.me.injin.testcodewithwitharchitecture.post.service;
 
 import com.me.injin.testcodewithwitharchitecture.post.domain.PostCreate;
 import com.me.injin.testcodewithwitharchitecture.post.domain.PostUpdate;

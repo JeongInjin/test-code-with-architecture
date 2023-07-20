@@ -1,7 +1,11 @@
 package com.me.injin.testcodewithwitharchitecture.user.domain;
 
+import com.me.injin.testcodewithwitharchitecture.common.domain.exception.CertificationCodeNotMatchedException;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.Clock;
+import java.util.UUID;
 
 @Getter
 public class User {
@@ -22,5 +26,54 @@ public class User {
         this.certificationCode = certificationCode;
         this.status = status;
         this.lastLoginAt = lastLoginAt;
+    }
+
+    public static User from(UserCreate userCreate) {
+        return User.builder()
+                .email(userCreate.getEmail())
+                .nickname(userCreate.getNickname())
+                .address(userCreate.getAddress())
+                .status(UserStatus.PENDING)
+                .certificationCode(UUID.randomUUID().toString())
+                .build();
+    }
+
+    public User update(UserUpdate userUpdate) {
+        return User.builder()
+                .id(id)
+                .email(email)
+                .nickname(userUpdate.getNickname())
+                .address(userUpdate.getAddress())
+                .certificationCode(certificationCode)
+                .status(status)
+                .lastLoginAt(lastLoginAt)
+                .build();
+    }
+
+    public User login() {
+        return User.builder()
+                .id(id)
+                .email(email)
+                .nickname(nickname)
+                .address(address)
+                .certificationCode(certificationCode)
+                .status(status)
+                .lastLoginAt(Clock.systemUTC().millis())
+                .build();
+    }
+
+    public User certificate(String certificationCode) {
+        if (!this.certificationCode.equals(certificationCode)) {
+            throw new CertificationCodeNotMatchedException();
+        }
+        return User.builder()
+                .id(id)
+                .email(email)
+                .nickname(nickname)
+                .address(address)
+                .certificationCode(certificationCode)
+                .status(UserStatus.ACTIVE)
+                .lastLoginAt(lastLoginAt)
+                .build();
     }
 }

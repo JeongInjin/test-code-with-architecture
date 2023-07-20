@@ -4,6 +4,8 @@ import com.me.injin.testcodewithwitharchitecture.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.Clock;
+
 @Getter
 public class Post {
 
@@ -20,5 +22,23 @@ public class Post {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.writer = writer;
+    }
+
+    public static Post from(User writer, PostCreate postCreate) {
+        return Post.builder()
+                .content(postCreate.getContent())
+                .writer(writer)
+                .createdAt(Clock.systemUTC().millis())
+                .build();
+    }
+
+    public Post update(PostUpdate postUpdate) {
+        return Post.builder()
+                .id(id)
+                .content(postUpdate.getContent())
+                .createdAt(createdAt)
+                .modifiedAt(Clock.systemUTC().millis())
+                .writer(writer)
+                .build();
     }
 }

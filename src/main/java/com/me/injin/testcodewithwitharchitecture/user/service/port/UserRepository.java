@@ -2,7 +2,6 @@ package com.me.injin.testcodewithwitharchitecture.user.service.port;
 
 import com.me.injin.testcodewithwitharchitecture.user.domain.User;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserStatus;
-import com.me.injin.testcodewithwitharchitecture.user.infrastructure.UserEntity;
 
 import java.util.Optional;
 

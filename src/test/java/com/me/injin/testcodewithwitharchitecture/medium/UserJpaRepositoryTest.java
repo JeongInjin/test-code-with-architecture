@@ -1,4 +1,4 @@
-package com.me.injin.testcodewithwitharchitecture.repository;
+package com.me.injin.testcodewithwitharchitecture.medium;
 
 import com.me.injin.testcodewithwitharchitecture.user.infrastructure.UserEntity;
 import com.me.injin.testcodewithwitharchitecture.user.infrastructure.UserJpaRepository;

@@ -1,4 +1,4 @@
-package com.me.injin.testcodewithwitharchitecture.user.controller;
+package com.me.injin.testcodewithwitharchitecture.medium;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserCreate;

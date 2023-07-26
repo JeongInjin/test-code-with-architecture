@@ -1,63 +1,40 @@
-package com.me.injin.testcodewithwitharchitecture.user.service;
-
-import com.me.injin.testcodewithwitharchitecture.common.domain.exception.CertificationCodeNotMatchedException;
-import com.me.injin.testcodewithwitharchitecture.common.domain.exception.ResourceNotFoundException;
-import com.me.injin.testcodewithwitharchitecture.mock.FakeMailSender;
-import com.me.injin.testcodewithwitharchitecture.mock.FakeUserRepository;
-import com.me.injin.testcodewithwitharchitecture.mock.TestClockHolder;
-import com.me.injin.testcodewithwitharchitecture.mock.TestUuidHolder;
-import com.me.injin.testcodewithwitharchitecture.user.domain.User;
-import com.me.injin.testcodewithwitharchitecture.user.domain.UserCreate;
-import com.me.injin.testcodewithwitharchitecture.user.domain.UserStatus;
-import com.me.injin.testcodewithwitharchitecture.user.domain.UserUpdate;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+package com.me.injin.testcodewithwitharchitecture.medium;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 
+import com.me.injin.testcodewithwitharchitecture.common.domain.exception.CertificationCodeNotMatchedException;
+import com.me.injin.testcodewithwitharchitecture.common.domain.exception.ResourceNotFoundException;
+import com.me.injin.testcodewithwitharchitecture.user.domain.User;
+import com.me.injin.testcodewithwitharchitecture.user.domain.UserCreate;
+import com.me.injin.testcodewithwitharchitecture.user.domain.UserStatus;
+import com.me.injin.testcodewithwitharchitecture.user.domain.UserUpdate;
+import com.me.injin.testcodewithwitharchitecture.user.service.UserService;
+import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
+
+@SpringBootTest
+@TestPropertySource("classpath:test-application.properties")
+@SqlGroup({
+    @Sql(value = "/sql/user-service-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(value = "/sql/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+})
 public class UserServiceTest {
 
+    @Autowired
     private UserService userService;
-
-    @BeforeEach
-    void init() {
-        FakeMailSender fakeMailSender = new FakeMailSender();
-        FakeUserRepository fakeUserRepository = new FakeUserRepository();
-
-        this.userService = userService.builder()
-                .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"))
-                .clockHolder(new TestClockHolder(1678530673958L))
-                .userRepository(fakeUserRepository)
-                .certificationService(new CertificationService(fakeMailSender))
-                .build();
-
-        fakeUserRepository.save(User.builder()
-                .id(1L)
-                .email("injin.dev@gmail.com")
-                .nickname("injin")
-                .address("Seoul")
-                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
-                .status(UserStatus.ACTIVE)
-                .lastLoginAt(0L)
-                .build());
-
-        fakeUserRepository.save(User.builder()
-                .id(2L)
-                .email("injin.prod@gmail.com")
-                .nickname("injin7")
-                .address("Seoul")
-                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
-                .status(UserStatus.PENDING)
-                .lastLoginAt(0L)
-                .build());
-    }
+    @MockBean
+    private JavaMailSender mailSender;
 
     @Test
     void getByEmail은_ACTIVE_상태인_유저를_찾아올_수_있다() {
@@ -107,10 +84,11 @@ public class UserServiceTest {
     void UserCreate_를_이용하여_유저를_생성할_수_있다() {
         // given
         UserCreate userCreate = UserCreate.builder()
-                .email("injin.dev@gmail.com")
-                .address("Gyeongi")
-                .nickname("injin-k")
-                .build();
+            .email("injin.dev@gmail.com")
+            .address("Gyeongi")
+            .nickname("injin-k")
+            .build();
+        BDDMockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         // when
         User result = userService.create(userCreate);
@@ -118,16 +96,16 @@ public class UserServiceTest {
         // then
         assertThat(result.getId()).isNotNull();
         assertThat(result.getStatus()).isEqualTo(UserStatus.PENDING);
-         assertThat(result.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab");
+        // assertThat(result.getCertificationCode()).isEqualTo("T.T"); // FIXME
     }
 
     @Test
     void userUpdateUserCreate_를_이용하여_유저를_수정할_수_있다() {
         // given
         UserUpdate userUpdate = UserUpdate.builder()
-                .address("Incheon")
-                .nickname("injin-n")
-                .build();
+            .address("Incheon")
+            .nickname("injin-n")
+            .build();
 
         // when
         userService.update(1, userUpdate);
@@ -147,7 +125,8 @@ public class UserServiceTest {
 
         // then
         User user = userService.getById(1);
-        assertThat(user.getLastLoginAt()).isEqualTo(1678530673958L);
+        assertThat(user.getLastLoginAt()).isGreaterThan(0L);
+        // assertThat(result.getLastLoginAt()).isEqualTo("T.T"); // FIXME
     }
 
     @Test

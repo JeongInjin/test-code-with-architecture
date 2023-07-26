@@ -9,11 +9,13 @@ import com.me.injin.testcodewithwitharchitecture.user.domain.UserCreate;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserStatus;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserUpdate;
 import com.me.injin.testcodewithwitharchitecture.user.service.port.UserRepository;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 public class UserService {
 

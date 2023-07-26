@@ -1,4 +1,4 @@
-package com.me.injin.testcodewithwitharchitecture.controller;
+package com.me.injin.testcodewithwitharchitecture.medium;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

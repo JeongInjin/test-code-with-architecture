@@ -1,5 +1,6 @@
 package com.me.injin.testcodewithwitharchitecture.user.infrastructure;
 
+import com.me.injin.testcodewithwitharchitecture.common.domain.exception.ResourceNotFoundException;
 import com.me.injin.testcodewithwitharchitecture.user.domain.User;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserStatus;
 import com.me.injin.testcodewithwitharchitecture.user.service.port.UserRepository;
@@ -13,6 +14,11 @@ import java.util.Optional;
 public class UserRepositoryImpl implements UserRepository {
 
     private final UserJpaRepository userJpaRepository;
+
+    @Override
+    public User getById(long id) {
+        return findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
+    }
 
     @Override
     public Optional<User> findById(long id) {

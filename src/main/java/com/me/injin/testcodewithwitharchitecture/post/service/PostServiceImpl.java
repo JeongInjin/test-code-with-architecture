@@ -3,6 +3,7 @@ package com.me.injin.testcodewithwitharchitecture.post.service;
 
 import com.me.injin.testcodewithwitharchitecture.common.domain.exception.ResourceNotFoundException;
 import com.me.injin.testcodewithwitharchitecture.common.service.port.ClockHolder;
+import com.me.injin.testcodewithwitharchitecture.post.controller.port.PostService;
 import com.me.injin.testcodewithwitharchitecture.post.domain.Post;
 import com.me.injin.testcodewithwitharchitecture.post.domain.PostCreate;
 import com.me.injin.testcodewithwitharchitecture.post.domain.PostUpdate;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Builder
 @RequiredArgsConstructor
-public class PostService {
+public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;

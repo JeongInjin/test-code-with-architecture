@@ -4,7 +4,7 @@ package com.me.injin.testcodewithwitharchitecture.user.service;
 import com.me.injin.testcodewithwitharchitecture.common.domain.exception.ResourceNotFoundException;
 import com.me.injin.testcodewithwitharchitecture.common.service.port.ClockHolder;
 import com.me.injin.testcodewithwitharchitecture.common.service.port.UuidHolder;
-import com.me.injin.testcodewithwitharchitecture.user.controller.port.*;
+import com.me.injin.testcodewithwitharchitecture.user.controller.port.UserService;
 import com.me.injin.testcodewithwitharchitecture.user.domain.User;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserCreate;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserStatus;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Builder
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserCreateService, UserReadService, UserUpdateService, AuthenticationService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CertificationService certificationService;

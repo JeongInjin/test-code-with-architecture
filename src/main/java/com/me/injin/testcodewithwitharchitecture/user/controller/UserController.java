@@ -1,11 +1,8 @@
 package com.me.injin.testcodewithwitharchitecture.user.controller;
 
-import com.me.injin.testcodewithwitharchitecture.user.controller.port.AuthenticationService;
-import com.me.injin.testcodewithwitharchitecture.user.controller.port.UserCreateService;
 import com.me.injin.testcodewithwitharchitecture.user.controller.port.UserService;
-import com.me.injin.testcodewithwitharchitecture.user.controller.port.UserUpdateService;
-import com.me.injin.testcodewithwitharchitecture.user.controller.response.UserResponse;
 import com.me.injin.testcodewithwitharchitecture.user.controller.response.MyProfileResponse;
+import com.me.injin.testcodewithwitharchitecture.user.controller.response.UserResponse;
 import com.me.injin.testcodewithwitharchitecture.user.domain.User;
 import com.me.injin.testcodewithwitharchitecture.user.domain.UserUpdate;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+/**
+ * getMyInfo, updateMyInfo 메서드의 경우 반환타입이 달라, MyInfoController 식으로 구성을 하는게 좋을듯하다.
+ * 현재 프로젝트에서는 구성이 과하다는 느낌이 들어, 변경하진 않았다.
+ */
 @Tag(name = "유저(users)")
 @RestController
 @Builder
@@ -30,7 +31,7 @@ public class UserController {
 
     @ResponseStatus
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable long id) {
+    public ResponseEntity<UserResponse> getById(@PathVariable long id) {
         return ResponseEntity
                 .ok()
                 .body(UserResponse.from(userService.getById(id)));

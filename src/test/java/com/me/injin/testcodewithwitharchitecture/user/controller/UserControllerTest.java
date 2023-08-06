@@ -2,7 +2,6 @@ package com.me.injin.testcodewithwitharchitecture.user.controller;
 
 import com.me.injin.testcodewithwitharchitecture.common.domain.exception.CertificationCodeNotMatchedException;
 import com.me.injin.testcodewithwitharchitecture.common.domain.exception.ResourceNotFoundException;
-import com.me.injin.testcodewithwitharchitecture.common.service.port.ClockHolder;
 import com.me.injin.testcodewithwitharchitecture.mock.TestContainer;
 import com.me.injin.testcodewithwitharchitecture.user.controller.response.MyProfileResponse;
 import com.me.injin.testcodewithwitharchitecture.user.controller.response.UserResponse;
@@ -35,7 +34,7 @@ public class UserControllerTest {
 
         // when
         ResponseEntity<UserResponse> result = testContainer.userController
-                .getUserById(1);
+                .getById(1);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
@@ -56,7 +55,7 @@ public class UserControllerTest {
         // then
         assertThatThrownBy(() -> {
             testContainer.userController
-                    .getUserById(1);
+                    .getById(1);
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 
